@@ -1,9 +1,9 @@
 #include "main.h"
-
-//make a function that goes through the path environment
-//and creates a linked list of the paths
-//the function should return the head of the list.
-
+/**
+  *pathify - function that makes a singly linked list from struct paths
+  *
+  *Return: the head of the path
+  */
 paths *pathify(void)
 {
 	char *temp;
@@ -36,13 +36,16 @@ paths *pathify(void)
 	free(mixpath);
 	return (pathhead);
 }
-
-int main(void)
+/**
+  *printpath - prints the path variable in a singly linked list
+  *@pathhead: the head of the singly linked list
+  *
+  *Return: 0 on success, -1 otherwise
+  */
+int printpath(paths *pathhead)
 {
-	paths *pathhead = NULL;
 	paths *cur;
 
-	pathhead = pathify();
 	if (pathhead == NULL)
 	{
 		printf("Error generating the paths\n");
@@ -58,5 +61,27 @@ int main(void)
 	}
 	return (0);
 }
-//create a function that frees up the linked list created
-//for the path
+/**
+  *freepath - function that frees the path singly linked list
+  *@pathhead: the head of the singly linked list
+  *
+  *Return: void
+  */
+void freepath(paths *pathhead)
+{
+	paths *cur;
+	paths *next;
+
+	if (!(pathhead == NULL))
+	{
+		cur = pathhead;
+		while (cur)
+		{
+			next = cur->next;
+			free(cur->path);
+			free(cur);
+			cur = next;
+		}
+	}
+	pathhead = NULL;
+}

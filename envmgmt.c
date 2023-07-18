@@ -1,8 +1,10 @@
 #include "main.h"
-
-//make a function that loops through the list of environment
-//variables and returns the requested environ
-
+/**
+  *gettheenv - returns a string with the environment variable requested
+  *@name: the name of the environment variable
+  *
+  *Return: the environment variable described in the parameter
+  */
 char *gettheenv(char *name)
 {
 	int i = 0;

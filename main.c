@@ -7,11 +7,13 @@
 int main(void)
 {
 	char *readbuf = NULL;
+	paths *pathhead = NULL;
 	size_t size = 1024;
 	int numread = 0;
 	int numwrite = 0;
 	char *command = NULL;
 
+	pathhead = pathify();
 	readbuf = malloc(size);
 	while (1)
 	{
@@ -24,6 +26,7 @@ int main(void)
 		numwrite = write(STDOUT_FILENO, readbuf, numread);
 	}
 	free(readbuf);
+	freepath(pathhead);
 	_putchar('\n');
 	return (0);
 }

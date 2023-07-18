@@ -40,7 +40,12 @@ int _strncmp(char *frst, char *second, size_t num)
 			return (-1);
 	return (1);
 }
-
+/**
+  *_strdup - function that duplicates a string
+  *@s: the string
+  *Description: works similar to strdup of the string.h header
+  *Return: the address to the newly created memory
+  */
 char *_strdup(char *s)
 {
 	size_t len, i;

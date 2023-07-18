@@ -17,6 +17,8 @@ typedef struct pathlist
 	struct pathlist *next;
 } paths;
 paths *pathify(void);
+void freepath(paths *pathhead);
+int printpath(paths *pathhead);
 
 extern char **environ;
 char *gettheenv(char *name);
