@@ -35,4 +35,7 @@ size_t checkdelims(char *mem, char *del);
 char **parsecmd(char *s);
 char *pathncmd(char *path, char *cmd);
 int runcmd(char *readbuf, paths *pathhead);
+
+void free_pointerarr(char **s);
+void clear_mem(char *mem, size_t len);
 #endif

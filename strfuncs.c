@@ -70,13 +70,10 @@ char *_strcat(char *dest, char *sec)
 {
 	int i = 0;
 	int j = 0;
-	size_t len_dest;
+//	size_t len_dest;
 
-	len_dest = _strlen(dest);
-	if (len_dest > 0)
-		while (dest[i] != '\0')
+	while (dest[i] != '\0')
 			i++;
-	dest[i] = '\0';
 	while (sec[j] != '\0')
 	{
 		dest[i] = sec[j];
