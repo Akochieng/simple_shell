@@ -5,17 +5,24 @@
   *
   *Return: the command
   */
-char *parsecmd(char *s)
+char **parsecmd(char *s)
 {
-	char *delim = " /n";
-	char *temp = NULL;
-	char *command = NULL;
+	char delim[] = {' ', '\n', '\0'};
+	char *temp, *readbuf;
+	char **delimited = NULL;
+	size_t num = 0;
+	size_t count = 0;
 
-	temp = strtok(s, delim);
-	command = temp;
-	while (!(temp == NULL))
-		temp = strtok(NULL, delim);
-	return (command);
+	num = checkdelims(s, delim);
+	delimited = malloc(sizeof(char *) * num);
+	readbuf = _strdup(s);
+	if (delimited == NULL)
+		exit(12);
+	delimited[count++] = strtok(readbuf, delim);
+	for (; count < num; count++)
+		delimited[count] = strtok(NULL, delim);
+	free(readbuf);
+	return (delimited);
 }
 /**
   *runcmd - function to run the command
@@ -23,14 +30,48 @@ char *parsecmd(char *s)
   *
   *Return: 1 on success, -1 otherwise
   */
-int runcmd(char **readbuf)
+int runcmd(char *readbuf, paths *pathhead)
 {
-	extern char **environ;
-	int state = 1;
-	char *const *thebuf;
+	char **cmd = NULL;
+	char *fullpath = NULL;
+	int found = -1;
+	paths *cur;
+	struct stat st;
 
-	thebuf = (char *const *)readbuf;
-	state = execve("\\bin", thebuf, environ);
-	if (state == -1)
-		_putchar('1');
+	cmd = parsecmd(readbuf);
+	cur = pathhead;
+	while (found == -1)
+	{
+		fullpath = pathncmd(cur->path, cmd[0]);
+		found = stat(fullpath, &st);
+		if (found == 0)
+			printf("%s\n", fullpath);
+		cur = cur->next;
+		free(fullpath);
+		if (cur == NULL)
+		{	
+			perror("stat");
+			break;
+		}
+	}
+	return (0);
+}
+/**
+int checkcmd(char *cmd, path *pathhead)
+{
+}
+*/
+char *pathncmd(char *path, char *cmd)
+{
+	char *temp = NULL;
+	size_t len = 0;
+
+	len = _strlen(path) + _strlen(cmd) + 2;
+	temp = malloc(len);
+	if (temp == NULL)
+		exit(12);
+	_strcat(temp, path);
+	_strcat(temp, "/");
+	_strcat(temp, cmd);
+	return (temp);
 }

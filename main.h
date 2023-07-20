@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
+#include <sys/stat.h>
 /**
   *struct pathlist - struct consisting of paths
   *@path: instance of a path
@@ -27,7 +28,11 @@ int _putchar(char c);
 size_t _strlen(char *s);
 int _strncmp(char *frst, char *second, size_t num);
 char *_strdup(char *s);
+char *_strcat(char *dest, char *sec);
 
-char *parsecmd(char *s);
-int runcmd(char **readbuf);
+size_t checkdelims(char *mem, char *del);
+
+char **parsecmd(char *s);
+char *pathncmd(char *path, char *cmd);
+int runcmd(char *readbuf, paths *pathhead);
 #endif

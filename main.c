@@ -10,7 +10,6 @@ int main(void)
 	paths *pathhead = NULL;
 	size_t size = 1024;
 	int numread = 0;
-	int numwrite = 0;
 	char *command = NULL;
 
 	pathhead = pathify();
@@ -21,9 +20,7 @@ int main(void)
 		numread = getline(&readbuf, &size, stdin);
 		if (numread == -1)
 			break;
-		command = parsecmd(readbuf);
-		runcmd(&readbuf);
-		numwrite = write(STDOUT_FILENO, readbuf, numread);
+		runcmd(readbuf, pathhead);
 	}
 	free(readbuf);
 	freepath(pathhead);
