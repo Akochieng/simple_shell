@@ -23,6 +23,7 @@ void freepath(paths *pathhead);
 int printpath(paths *pathhead);
 
 extern char **environ;
+int exitnow;
 char *gettheenv(char *name);
 
 int _putchar(char c);
@@ -39,4 +40,5 @@ int runcmd(char *readbuf, paths *pathhead);
 
 void free_pointerarr(char **s);
 void clear_mem(char *mem, size_t len);
+void _theexit(int sig);
 #endif

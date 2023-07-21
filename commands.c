@@ -19,13 +19,20 @@ char **parsecmd(char *s)
 	if (delimited == NULL)
 		exit(12);
 	temp = strtok(readbuf, delim);
-	delimited[count++] = _strdup(temp);
-	for (; count < num - 1 ; count++)
+	if (!(temp == NULL))
 	{
-		temp = strtok(NULL, delim);
-		delimited[count] = _strdup(temp);
+		for (count = 0; count < num - 1 && temp != NULL; count++)
+		{
+			delimited[count] = _strdup(temp);
+			temp = strtok(NULL, delim);
+		}
+		delimited[count] = NULL;
 	}
-	delimited[count] = NULL;
+	else
+	{
+		free(delimited);
+		delimited = NULL;
+	}
 	free(readbuf);
 	return (delimited);
 }
@@ -73,7 +80,8 @@ int runcmd(char *readbuf, paths *pathhead)
 		}
 	if (cur == NULL)
 		perror("stat");
-	free_pointerarr(cmd);
+	if (cmd != NULL)
+		free_pointerarr(cmd);
 	return (0);
 }
 /**

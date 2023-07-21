@@ -1,29 +1,45 @@
 #include "main.h"
 /**
   *main - this is the main function of the simple shell program
+  *@ac: the number of parameters passed in
+  *@argv: the parameters themselves
   *
   *Return: 0 on success
   */
-int main(void)
+int main(int ac __attribute__((unused)), char **argv)
 {
 	char *readbuf = NULL;
 	paths *pathhead = NULL;
 	size_t size = 1024;
 	int numread = 0;
 
+	exitnow = 0;
 	pathhead = pathify();
 	readbuf = malloc(size);
-	while (1)
+	signal(SIGINT, _theexit);
+	while (!exitnow)
 	{
-		_putchar('$');
+		if (isatty(fileno(stdin)))
+			_putchar('$');
 		numread = getline(&readbuf, &size, stdin);
 		if (numread == -1)
 			break;
 		runcmd(readbuf, pathhead);
 	}
+	fflush(stdin);
 	free(readbuf);
 	freepath(pathhead);
 	_putchar('\n');
 	return (0);
 }
-
+/**
+  *_theexit - call back function to handle signal SIGINT
+  *@sig: the signal
+  *
+  *Return: void
+  */
+void _theexit(int sig)
+{
+	if (sig == SIGINT)
+		exitnow = 1;
+}
