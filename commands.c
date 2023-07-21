@@ -17,7 +17,7 @@ char **parsecmd(char *s)
 	delimited = malloc(sizeof(char *) * num);
 	readbuf = _strdup(s);
 	if (delimited == NULL)
-		exit(12);
+		theerr(12, EXITPROG);
 	temp = strtok(readbuf, delim);
 	if (!(temp == NULL))
 	{
@@ -79,7 +79,7 @@ int runcmd(char *readbuf, paths *pathhead)
 			free(fullpath);
 		}
 	if (cur == NULL)
-		perror("stat");
+		theerr(2, CONTPROG);
 	if (cmd != NULL)
 		free_pointerarr(cmd);
 	return (0);
@@ -99,7 +99,7 @@ char *pathncmd(char *path, char *cmd)
 	len = _strlen(path) + _strlen(cmd) + 2;
 	temp = malloc(len);
 	if (temp == NULL)
-		exit(12);
+		theerr(12, EXITPROG);
 	clear_mem(temp, len);
 	_strcat(temp, path);
 	_strcat(temp, "/");

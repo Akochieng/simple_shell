@@ -8,6 +8,9 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <errno.h>
+#define EXITPROG 1
+#define CONTPROG 0
 /**
   *struct pathlist - struct consisting of paths
   *@path: instance of a path
@@ -23,6 +26,7 @@ void freepath(paths *pathhead);
 int printpath(paths *pathhead);
 
 extern char **environ;
+char *progname;
 int exitnow;
 char *gettheenv(char *name);
 
@@ -41,4 +45,5 @@ int runcmd(char *readbuf, paths *pathhead);
 void free_pointerarr(char **s);
 void clear_mem(char *mem, size_t len);
 void _theexit(int sig);
+void theerr(int err, int stop);
 #endif

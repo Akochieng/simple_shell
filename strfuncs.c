@@ -55,7 +55,7 @@ char *_strdup(char *s)
 	len = _strlen(s);
 	newstr = malloc(len + 1);
 	if (newstr == NULL)
-		exit(12);
+		theerr(12, EXITPROG);
 	for (i = 0; ((newstr[i] = s[i]) != '\0'); i++)
 		;
 	return (newstr);

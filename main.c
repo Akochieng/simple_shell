@@ -14,6 +14,7 @@ int main(int ac __attribute__((unused)), char **argv)
 	int numread = 0;
 
 	exitnow = 0;
+	progname = argv[0];
 	pathhead = pathify();
 	readbuf = malloc(size);
 	signal(SIGINT, _theexit);
@@ -30,7 +31,7 @@ int main(int ac __attribute__((unused)), char **argv)
 	free(readbuf);
 	freepath(pathhead);
 	_putchar('\n');
-	return (0);
+	exit(EXIT_SUCCESS);
 }
 /**
   *_theexit - call back function to handle signal SIGINT
@@ -42,4 +43,12 @@ void _theexit(int sig)
 {
 	if (sig == SIGINT)
 		exitnow = 1;
+}
+
+void theerr(int err, int stop)
+{
+	errno = err;
+	perror(progname);
+	if (stop == 1)
+		raise(SIGINT);
 }
