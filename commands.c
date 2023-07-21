@@ -44,6 +44,7 @@ int runcmd(char *readbuf, paths *pathhead)
 	struct stat st;
 	pid_t childpid;
 	int state = 0;
+	int status;
 
 	cur = pathhead;
 	cmd = parsecmd(readbuf);
@@ -63,6 +64,8 @@ int runcmd(char *readbuf, paths *pathhead)
 					if (state == -1)
 						perror("execve");
 				}
+				else
+					wait(&status);
 			}
 			cur = cur->next;
 			free(fullpath);

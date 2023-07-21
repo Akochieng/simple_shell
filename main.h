@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <sys/stat.h>
 /**
   *struct pathlist - struct consisting of paths
