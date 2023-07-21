@@ -9,7 +9,6 @@ char *gettheenv(char *name)
 {
 	int i = 0;
 	size_t len;
-	extern char **environ;
 	int state;
 
 	if (name == NULL)

@@ -10,7 +10,6 @@ int main(void)
 	paths *pathhead = NULL;
 	size_t size = 1024;
 	int numread = 0;
-	char *command = NULL;
 
 	pathhead = pathify();
 	readbuf = malloc(size);

@@ -1,6 +1,6 @@
 #include "main.h"
 /**
-  *clear_pointerarr - clears an array of pointers
+  *free_pointerarr - clears an array of pointers
   *@s: the array of strings to be cleared
   *
   *Return: void

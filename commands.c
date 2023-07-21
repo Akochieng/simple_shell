@@ -32,6 +32,7 @@ char **parsecmd(char *s)
 /**
   *runcmd - function to run the command
   *@readbuf: the read buffer
+  *@pathhead: the head of the path singly linked list
   *
   *Return: 1 on success, -1 otherwise
   */
