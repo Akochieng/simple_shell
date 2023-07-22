@@ -24,6 +24,17 @@ typedef struct pathlist
 paths *pathify(void);
 void freepath(paths *pathhead);
 int printpath(paths *pathhead);
+/**
+  *struct commands 0 struct with a list of internal commands
+  *@name: the name of the command to reference the function pointer
+  *@f: the function to be returned
+  */
+typedef struct commands
+{
+	char *name;
+	int (*f)(char **);
+} intcmd;
+int (*checkinternal(char **cmd))(char **);
 
 extern char **environ;
 char *progname;
@@ -32,11 +43,22 @@ char *gettheenv(char *name);
 
 int _putchar(char c);
 size_t _strlen(char *s);
+size_t len_ptrarr(char **s);
 int _strncmp(char *frst, char *second, size_t num);
 char *_strdup(char *s);
 char *_strcat(char *dest, char *sec);
+int _strcmp(char *first, char *second);
 
 size_t checkdelims(char *mem, char *del);
+
+int _atoi(char *s);
+
+int exit_f(char **cmd);
+int settheenv(char **cmd);
+int unsettheenv(char **cmd);
+int changedir(char **cmd);
+int thealias(char **cmd);
+int eecho(char **cmd);
 
 char **parsecmd(char *s);
 char *pathncmd(char *path, char *cmd);

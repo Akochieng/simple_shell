@@ -30,3 +30,17 @@ void clear_mem(char *mem, size_t len)
 	for (i = 0; i < len; i++)
 		mem[i] = '\0';
 }
+/**
+  *len_ptrarr - compute the length of an array of pointers
+  *@s: pointers to strings
+  *
+  *Return: number of elements in the array
+  */
+size_t len_ptrarr(char **s)
+{
+	size_t len = 0;
+
+	while (s[len] != NULL)
+		len++;
+	return (len);
+}

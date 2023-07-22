@@ -30,8 +30,7 @@ int main(int ac __attribute__((unused)), char **argv)
 	fflush(stdin);
 	free(readbuf);
 	freepath(pathhead);
-	_putchar('\n');
-	exit(EXIT_SUCCESS);
+	return (0);
 }
 /**
   *_theexit - call back function to handle signal SIGINT
@@ -44,11 +43,37 @@ void _theexit(int sig)
 	if (sig == SIGINT)
 		exitnow = 1;
 }
-
+/**
+  *theerr - handles the error raised
+  *@err: the error
+  *@stop: defines whether the program exits or not
+  *
+  *Return: void
+  */
 void theerr(int err, int stop)
 {
 	errno = err;
 	perror(progname);
 	if (stop == 1)
 		raise(SIGINT);
+}
+/**
+  *exit_f - function to handle the exit command
+  *@cmd: pointer to the command and parameters
+  *
+  *Return: 1 on success
+  */
+int exit_f(char **cmd)
+{
+	size_t len = 0;
+	int err = 0;
+
+	len = len_ptrarr(cmd);
+	if (len > 2)
+		err = 1;
+	else if (len == 2)
+		err = _atoi(cmd[1]);
+	errno = err;
+	raise(SIGINT);
+	return (1);
 }

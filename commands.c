@@ -53,11 +53,16 @@ int runcmd(char *readbuf, paths *pathhead)
 	pid_t childpid;
 	int state = 0;
 	int status;
+	int (*internal)(char **) = NULL;
 
 	cur = pathhead;
 	cmd = parsecmd(readbuf);
 	if (!(cmd == NULL))
-		while (found == -1 && cur != NULL)
+	{
+		internal = checkinternal(cmd);
+		if (internal != NULL)
+			internal(cmd);
+		while (found == -1 && cur != NULL && internal == NULL)
 		{
 			fullpath = pathncmd(cur->path, cmd[0]);
 			found = stat(fullpath, &st);
@@ -70,7 +75,7 @@ int runcmd(char *readbuf, paths *pathhead)
 				{
 					state = execve(fullpath, cmd, environ);
 					if (state == -1)
-						perror("execve");
+						theerr(127, CONTPROG);
 				}
 				else
 					wait(&status);
@@ -78,6 +83,7 @@ int runcmd(char *readbuf, paths *pathhead)
 			cur = cur->next;
 			free(fullpath);
 		}
+	}
 	if (cur == NULL)
 		theerr(2, CONTPROG);
 	if (cmd != NULL)
@@ -89,7 +95,7 @@ int runcmd(char *readbuf, paths *pathhead)
   *@path: the path
   *@cmd: the command
   *
-  *Return: the fullpath and command combined
+  ;*Return: the fullpath and command combined
   */
 char *pathncmd(char *path, char *cmd)
 {
@@ -105,4 +111,29 @@ char *pathncmd(char *path, char *cmd)
 	_strcat(temp, "/");
 	_strcat(temp, cmd);
 	return (temp);
+}
+/**
+  *checkinternal - function that checks whether the function is one
+  *of the internally defined functions and returns it
+  *@cmd: the array of arrays input into the command
+  *
+  *Return: 0 if function is not internal
+  */
+int (*checkinternal(char **cmd))(char **)
+{
+	intcmd funcs[] = {
+		{"exit", exit_f},
+		{"setenv", settheenv},
+		{"unsetenv", unsettheenv},
+		{"cd", changedir},
+		{"alias", thealias},
+		{"theevho", eecho},
+		{NULL, NULL}
+	};
+	int i;
+
+	for (i = 0; funcs[i].name != NULL; i++)
+		if (_strcmp(funcs[i].name, cmd[0]) == 1)
+			return (funcs[i].f);
+	return (NULL);
 }
