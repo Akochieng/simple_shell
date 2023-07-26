@@ -1,6 +1,6 @@
 #include "main.h"
 /**
-  *clear_pointerarr - clears an array of pointers
+  *free_pointerarr - clears an array of pointers
   *@s: the array of strings to be cleared
   *
   *Return: void
@@ -29,4 +29,30 @@ void clear_mem(char *mem, size_t len)
 
 	for (i = 0; i < len; i++)
 		mem[i] = '\0';
+}
+/**
+  *len_ptrarr - compute the length of an array of pointers
+  *@s: pointers to strings
+  *
+  *Return: number of elements in the array
+  */
+size_t len_ptrarr(char **s)
+{
+	size_t len = 0;
+
+	while (s[len] != NULL)
+		len++;
+	return (len);
+}
+/**
+  *freeresources - frees up resources allocated using malloc
+  *
+  *Return: void
+  */
+void freeresources(void)
+{
+	fflush(stdin);
+	free(readbuf);
+	freepath(pathhead);
+	free_pointerarr(myenviron);
 }

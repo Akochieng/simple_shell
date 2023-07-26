@@ -7,7 +7,7 @@
   */
 int _putchar(char c)
 {
-	return(write(1, &c, 1));
+	return (write(1, &c, 1));
 }
 /**
   *_strlen - function to compute the length of a string
@@ -26,8 +26,9 @@ size_t _strlen(char *s)
 }
 /**
   *_strncmp - compares the first n characters in a string
-  *@frst - the first string
-  *@second - the second string
+  *@frst: the first string
+  *@second: the second string
+  *@num: the number of characters to be compared
   *
   *Return: -1 if false and 1 otherwise
   */
@@ -54,9 +55,9 @@ char *_strdup(char *s)
 	len = _strlen(s);
 	newstr = malloc(len + 1);
 	if (newstr == NULL)
-		exit(12);
+		theerr(12, EXITPROG);
 	for (i = 0; ((newstr[i] = s[i]) != '\0'); i++)
-			;
+		;
 	return (newstr);
 }
 /**
@@ -70,10 +71,9 @@ char *_strcat(char *dest, char *sec)
 {
 	int i = 0;
 	int j = 0;
-//	size_t len_dest;
 
 	while (dest[i] != '\0')
-			i++;
+		i++;
 	while (sec[j] != '\0')
 	{
 		dest[i] = sec[j];
@@ -81,5 +81,5 @@ char *_strcat(char *dest, char *sec)
 		j++;
 	}
 	dest[i] = '\0';
-	return(dest);
+	return (dest);
 }
