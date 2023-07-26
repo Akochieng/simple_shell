@@ -50,9 +50,6 @@ int runcmd(char *readbuf, paths *pathhead)
 	int found = -1;
 	paths *cur;
 	struct stat st;
-	pid_t childpid;
-	int state = 0;
-	int status;
 	int (*internal)(char **) = NULL;
 
 	cur = pathhead;
@@ -67,19 +64,7 @@ int runcmd(char *readbuf, paths *pathhead)
 			fullpath = pathncmd(cur->path, cmd[0]);
 			found = stat(fullpath, &st);
 			if (found == 0)
-			{
-				childpid = fork();
-				if (childpid == -1)
-					perror("fork");
-				else if (childpid == 0)
-				{
-					state = execve(fullpath, cmd, environ);
-					if (state == -1)
-						theerr(127, CONTPROG);
-				}
-				else
-					wait(&status);
-			}
+				runexternal(fullpath, cmd);
 			cur = cur->next;
 			free(fullpath);
 		}
@@ -128,6 +113,7 @@ int (*checkinternal(char **cmd))(char **)
 		{"cd", changedir},
 		{"alias", thealias},
 		{"theevho", eecho},
+		{"env", printtheenv},
 		{NULL, NULL}
 	};
 	int i;
@@ -136,4 +122,33 @@ int (*checkinternal(char **cmd))(char **)
 		if (_strcmp(funcs[i].name, cmd[0]) == 1)
 			return (funcs[i].f);
 	return (NULL);
+}
+/**
+  *runexternal - runs external functions
+  *@fullpath: the full path to the executable
+  *@cmd: the command to be run and its parameters
+  *
+  *Return: the result of running the command
+  */
+int runexternal(char *fullpath, char **cmd)
+{
+	pid_t childpid;
+	int state = 0;
+	int status;
+
+	childpid = fork();
+	if (childpid == -1)
+	{
+		errno = 16;
+		perror(progname);
+	}
+	else if (childpid == 0)
+	{
+		state = execve(fullpath, cmd, myenviron);
+		if (state == -1)
+			theerr(127, CONTPROG);
+	}
+	else
+		wait(&status);
+	return (state);
 }

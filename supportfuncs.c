@@ -22,3 +22,18 @@ int _atoi(char *s)
 	}
 	return (result * sign);
 }
+/**
+  *_puts - prints a string of characters to the standard output
+  *@s: the string
+  *
+  *Return: the number of characters printed
+  */
+int _puts(char *s)
+{
+	int len = 0;
+
+	if (s == NULL)
+		return (0);
+	len = _strlen(s);
+	return (write(1, s, len));
+}

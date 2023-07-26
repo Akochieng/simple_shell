@@ -37,11 +37,15 @@ typedef struct commands
 int (*checkinternal(char **cmd))(char **);
 
 extern char **environ;
+char **myenviron;
 char *progname;
 int exitnow;
 char *gettheenv(char *name);
+void populateenviron(void);
+void freeenviron(char **environment);
 
 int _putchar(char c);
+int _puts(char *s);
 size_t _strlen(char *s);
 size_t len_ptrarr(char **s);
 int _strncmp(char *frst, char *second, size_t num);
@@ -59,10 +63,13 @@ int unsettheenv(char **cmd);
 int changedir(char **cmd);
 int thealias(char **cmd);
 int eecho(char **cmd);
+int printtheenv(char **cmd __attribute__((unused)));
+char *genenvstr(char *name, char *value);
 
 char **parsecmd(char *s);
 char *pathncmd(char *path, char *cmd);
 int runcmd(char *readbuf, paths *pathhead);
+int runexternal(char *fullpath, char **cmd);
 
 void free_pointerarr(char **s);
 void clear_mem(char *mem, size_t len);

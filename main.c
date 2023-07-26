@@ -15,6 +15,7 @@ int main(int ac __attribute__((unused)), char **argv)
 
 	exitnow = 0;
 	progname = argv[0];
+	populateenviron();
 	pathhead = pathify();
 	readbuf = malloc(size);
 	signal(SIGINT, _theexit);
@@ -30,6 +31,8 @@ int main(int ac __attribute__((unused)), char **argv)
 	fflush(stdin);
 	free(readbuf);
 	freepath(pathhead);
+	freeenviron(myenviron);
+	_putchar('\n');
 	return (0);
 }
 /**
