@@ -48,13 +48,14 @@ int printpath(paths *pathhead)
 
 	if (pathhead == NULL)
 	{
-		printf("Error generating the paths\n");
+		_puts("Error generating the paths\n");
 		exit(1);
 	}
 	cur = pathhead;
 	while (cur)
 	{
-		printf("%s\n", cur->path);
+		_puts(cur->path);
+		_putchar('\n');
 		cur = cur->next;
 		if (cur == NULL)
 			break;

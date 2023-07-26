@@ -28,7 +28,6 @@ int main(int ac __attribute__((unused)), char **argv)
 			break;
 		runcmd(readbuf, pathhead);
 	}
-	_putchar('\n');
 	freeresources();
 	return (0);
 }
