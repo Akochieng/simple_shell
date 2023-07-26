@@ -53,6 +53,7 @@ char *genenvstr(char *name, char *value)
 	size_t len;
 	char *dest;
 
+	dest = NULL;
 	if (name == NULL || value == NULL)
 	{
 		theerr(22, 0);
@@ -70,7 +71,11 @@ char *genenvstr(char *name, char *value)
 	_strcat(dest, value);
 	return (dest);
 }
-
+/**
+  *populateenviron - function to populate the environment
+  *
+  *Return: void
+  */
 void populateenviron(void)
 {
 	size_t len = 0;
@@ -78,17 +83,7 @@ void populateenviron(void)
 
 	len = len_ptrarr(environ);
 	myenviron = malloc(sizeof(char **) * (len + 1));
-	for (i = 0; i <= len; i++)
+	for (i = 0; environ[i] != NULL; i++)
 		myenviron[i] = _strdup(environ[i]);
-}
-
-void freeenviron(char **environment)
-{
-	size_t len = 0;
-	size_t i = 0;
-
-	len = len_ptrarr(environment);
-	for (i = 0; i <= len; i++)
-		free(environment[i]);
-	free(environment);
+	myenviron[i] = NULL;
 }

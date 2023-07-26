@@ -44,3 +44,15 @@ size_t len_ptrarr(char **s)
 		len++;
 	return (len);
 }
+/**
+  *freeresources - frees up resources allocated using malloc
+  *
+  *Return: void
+  */
+void freeresources(void)
+{
+	fflush(stdin);
+	free(readbuf);
+	freepath(pathhead);
+	free_pointerarr(myenviron);
+}

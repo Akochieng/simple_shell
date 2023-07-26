@@ -8,11 +8,11 @@
   */
 int main(int ac __attribute__((unused)), char **argv)
 {
-	char *readbuf = NULL;
-	paths *pathhead = NULL;
 	size_t size = 1024;
 	int numread = 0;
 
+	pathhead = NULL;
+	readbuf = NULL;
 	exitnow = 0;
 	progname = argv[0];
 	populateenviron();
@@ -28,11 +28,8 @@ int main(int ac __attribute__((unused)), char **argv)
 			break;
 		runcmd(readbuf, pathhead);
 	}
-	fflush(stdin);
-	free(readbuf);
-	freepath(pathhead);
-	freeenviron(myenviron);
 	_putchar('\n');
+	freeresources();
 	return (0);
 }
 /**
@@ -44,7 +41,10 @@ int main(int ac __attribute__((unused)), char **argv)
 void _theexit(int sig)
 {
 	if (sig == SIGINT)
-		exitnow = 1;
+	{
+		freeresources();
+		exit(EXIT_SUCCESS);
+	}
 }
 /**
   *theerr - handles the error raised
@@ -58,7 +58,7 @@ void theerr(int err, int stop)
 	errno = err;
 	perror(progname);
 	if (stop == 1)
-		raise(SIGINT);
+		exitnow = 1;
 }
 /**
   *exit_f - function to handle the exit command

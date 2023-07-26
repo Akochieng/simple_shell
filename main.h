@@ -22,10 +22,11 @@ typedef struct pathlist
 	struct pathlist *next;
 } paths;
 paths *pathify(void);
+paths *pathhead;
 void freepath(paths *pathhead);
 int printpath(paths *pathhead);
 /**
-  *struct commands 0 struct with a list of internal commands
+  *struct commands - struct with a list of internal commands
   *@name: the name of the command to reference the function pointer
   *@f: the function to be returned
   */
@@ -67,6 +68,7 @@ int printtheenv(char **cmd __attribute__((unused)));
 char *genenvstr(char *name, char *value);
 
 char **parsecmd(char *s);
+char *readbuf;
 char *pathncmd(char *path, char *cmd);
 int runcmd(char *readbuf, paths *pathhead);
 int runexternal(char *fullpath, char **cmd);
@@ -75,4 +77,5 @@ void free_pointerarr(char **s);
 void clear_mem(char *mem, size_t len);
 void _theexit(int sig);
 void theerr(int err, int stop);
+void freeresources(void);
 #endif

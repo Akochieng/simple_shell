@@ -11,7 +11,7 @@ int settheenv(char **cmd)
 	char *name, *value, *newpair, *found, **temp, **oldenviron;
 
 	i = len = 0;
-	name = value = NULL;
+	name = value = newpair = found = NULL;
 	len = len_ptrarr(cmd);
 	if (len != 3)
 	{
@@ -19,9 +19,10 @@ int settheenv(char **cmd)
 		return (-1);
 	}
 	name = cmd[1];
+	value = cmd[2];
 	namelen = _strlen(name);
 	found = gettheenv(name);
-	newpair = genenvstr(name, cmd[2]);
+	newpair = genenvstr(name, value);
 	size = found == NULL ?  len_ptrarr(myenviron) + 2 : len_ptrarr(myenviron) + 1;
 	temp = malloc(sizeof(char *) * size);
 	if (temp == NULL)
@@ -32,10 +33,7 @@ int settheenv(char **cmd)
 	while (myenviron[i] != NULL)
 	{
 		state = _strncmp(name, myenviron[i], namelen);
-		if (state == 1)
-			temp[i] = newpair;
-		else
-			temp[i] = myenviron[i];
+		temp[i] = state == 1 ? newpair : myenviron[i];
 		i++;
 	}
 	if (found == NULL)
@@ -73,16 +71,15 @@ int unsettheenv(char **cmd)
 	while (myenviron[i] != NULL)
 	{
 		state = _strncmp(name, myenviron[i], namelen);
-		if (state == 1)
-		{
-			j++;
-			continue;
-		}
-		temp[j++] = myenviron[i++];
+		if (state != 1)
+			temp[j++] = myenviron[i++];
+		else
+			free(myenviron[i++]);
 	}
+	temp[j] = NULL;
 	oldenviron = myenviron;
 	myenviron = temp;
-	free(oldenviron);
+	free_pointerarr(oldenviron);
 	return (0);
 }
 /**
