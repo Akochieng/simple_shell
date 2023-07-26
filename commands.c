@@ -48,6 +48,7 @@ int runcmd(char *readbuf, paths *pathhead)
 	char **cmd = NULL;
 	char *fullpath = NULL;
 	int found = -1;
+	int checkcount = 0;
 	paths *cur;
 	struct stat st;
 	int (*internal)(char **) = NULL;
@@ -61,12 +62,17 @@ int runcmd(char *readbuf, paths *pathhead)
 			internal(cmd);
 		while (found == -1 && cur != NULL && internal == NULL)
 		{
-			fullpath = pathncmd(cur->path, cmd[0]);
+			if (checkcount == 0)
+				fullpath = cmd[0];
+			else
+				fullpath = pathncmd(cur->path, cmd[0]);
 			found = stat(fullpath, &st);
 			if (found == 0)
 				runexternal(fullpath, cmd);
 			cur = cur->next;
-			free(fullpath);
+			if (checkcount > 0)
+				free(fullpath);
+			checkcount++;
 		}
 	}
 	if (cur == NULL)
