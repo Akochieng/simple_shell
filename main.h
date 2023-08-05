@@ -39,8 +39,10 @@ int (*checkinternal(char **cmd))(char **);
 
 extern char **environ;
 char **myenviron;
+char **cmd;
 char *progname;
 int exitnow;
+int exitstate;
 char *gettheenv(char *name);
 void populateenviron(void);
 void freeenviron(char **environment);

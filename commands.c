@@ -45,7 +45,6 @@ char **parsecmd(char *s)
   */
 int runcmd(char *readbuf, paths *pathhead)
 {
-	char **cmd = NULL;
 	char *fullpath = NULL;
 	int found = -1;
 	int checkcount = 0;
@@ -53,6 +52,7 @@ int runcmd(char *readbuf, paths *pathhead)
 	struct stat st;
 	int (*internal)(char **) = NULL;
 
+	cmd = NULL;
 	cur = pathhead;
 	cmd = parsecmd(readbuf);
 	if (!(cmd == NULL))
@@ -77,8 +77,11 @@ int runcmd(char *readbuf, paths *pathhead)
 	}
 	if (cur == NULL)
 		theerr(2, CONTPROG);
-	if (cmd != NULL)
+	if (!(cmd == NULL))
+	{
 		free_pointerarr(cmd);
+		cmd = NULL;
+	}
 	return (0);
 }
 /**

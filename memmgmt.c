@@ -9,12 +9,16 @@ void free_pointerarr(char **s)
 {
 	int i = 0;
 
-	while (s[i] != NULL)
+	if (s == NULL)
+		return;
+	while (s[i])
 	{
 		free(s[i]);
+		s[i] = NULL;
 		i++;
 	}
 	free(s);
+	s = NULL;
 }
 /**
   *clear_mem - sets the contents of a memory location to '\0'
@@ -55,4 +59,6 @@ void freeresources(void)
 	free(readbuf);
 	freepath(pathhead);
 	free_pointerarr(myenviron);
+	if (cmd != NULL)
+		free_pointerarr(cmd);
 }

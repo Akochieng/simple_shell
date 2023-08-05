@@ -13,7 +13,9 @@ int main(int ac __attribute__((unused)), char **argv)
 
 	pathhead = NULL;
 	readbuf = NULL;
+	cmd = NULL;
 	exitnow = 0;
+	exitstate = EXIT_SUCCESS;
 	progname = argv[0];
 	populateenviron();
 	pathhead = pathify();
@@ -29,7 +31,7 @@ int main(int ac __attribute__((unused)), char **argv)
 		runcmd(readbuf, pathhead);
 	}
 	freeresources();
-	return (0);
+	exit(exitstate);
 }
 /**
   *_theexit - call back function to handle signal SIGINT
@@ -40,10 +42,7 @@ int main(int ac __attribute__((unused)), char **argv)
 void _theexit(int sig)
 {
 	if (sig == SIGINT)
-	{
-		freeresources();
-		exit(EXIT_SUCCESS);
-	}
+		exitnow = 1;
 }
 /**
   *theerr - handles the error raised
@@ -57,7 +56,10 @@ void theerr(int err, int stop)
 	errno = err;
 	perror(progname);
 	if (stop == 1)
+	{
 		exitnow = 1;
+		exitstate = err;
+	}
 }
 /**
   *exit_f - function to handle the exit command
@@ -76,6 +78,7 @@ int exit_f(char **cmd)
 	else if (len == 2)
 		err = _atoi(cmd[1]);
 	errno = err;
-	raise(SIGINT);
+	exitstate = err;
+	exitnow = 1;
 	return (1);
 }
