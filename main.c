@@ -54,7 +54,11 @@ void _theexit(int sig)
 void theerr(int err, int stop)
 {
 	errno = err;
-	perror(progname);
+	exitstate = err;
+	if (err == 2)
+		error(0, 0, "1: %s: is not found", cmd[0]);
+	else
+		perror(progname);
 	if (stop == 1)
 	{
 		exitnow = 1;
