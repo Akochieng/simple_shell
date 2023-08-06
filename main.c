@@ -77,8 +77,16 @@ int exit_f(char **cmd)
 		err = 1;
 	else if (len == 2)
 		err = _atoi(cmd[1]);
-	errno = err;
-	exitstate = err;
+	if (err < 0)
+	{
+		exitstate = 2;
+		error(0, exitstate, "%s: Illegal number: %s\n", cmd[0], cmd[1]);
+	}
+	else
+	{
+		errno = err;
+		exitstate = err;
+	}
 	exitnow = 1;
 	return (1);
 }
