@@ -80,7 +80,7 @@ int exit_f(char **cmd)
 	if (err < 0)
 	{
 		exitstate = 2;
-		error(0, 0, "%s: Illegal number: %s", cmd[0], cmd[1]);
+		error(0, 0, "%s: 1: Illegal number: %s", cmd[0], cmd[1]);
 	}
 	else
 	{
